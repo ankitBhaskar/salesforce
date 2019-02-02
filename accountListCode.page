@@ -1,0 +1,60 @@
+<apex:page standardController="account" recordSetVar="accs" tabstyle="account" >      
+<apex:form >
+    <apex:param name="q" value="7" assignTo="{!PageSize}"/>
+    <apex:pageBlock id="contacts_list">
+        <apex:outputPanel style="float:right">
+        Filter: 
+        <apex:selectList value="{! filterId }" size="1">
+            <apex:selectOptions value="{!listViewOptions}"/>
+            <apex:actionSupport event="onchange" reRender="contacts_list"/>
+        </apex:selectList><br /><br />
+        </apex:outputPanel>
+
+      <!--  <apex:pageBlockTable value="{!accs}" var="ac" >   
+            <apex:column headerValue="name">
+                <apex:inputField value="{!ac.name}" />  
+            </apex:column>
+
+            <apex:column headerValue="Account Number">
+                <apex:inputField value="{!ac.AccountNumber}" />   
+            </apex:column>
+
+            <apex:column headerValue="account source">
+                <apex:inputField value="{!ac.AccountSource}" />  
+            </apex:column>
+
+            <apex:column headerValue="Site">
+                <apex:inputField value="{!ac.site}" />
+            </apex:column>
+        </apex:pageBlockTable> -->
+
+        <!-- Pagination --><br />
+        <table style="width: 100%"><tr> 
+            <td>
+                Page: <apex:outputText value=" {! IF(CEILING(ResultSize/PageSize)==0,0,PageNumber)} of {!CEILING(ResultSize/PageSize) }"/>               
+            </td>            
+
+            <td align="center">
+                <apex:commandButton value="|<" action="{!first}" disabled="{!!hasPrevious}"  />         
+                <apex:commandButton value="<<" action="{!previous}" disabled="{!!hasPrevious}" />   
+                <apex:commandButton value=">>" action="{!next}" disabled="{!!hasNext}"/>            
+                <apex:commandButton value=">|" action="{!last}" disabled="{!!hasNext}" />     
+            </td>
+
+            <td align="right">
+                <apex:outputText value="Records per page :" rendered="{!CEILING(ResultSize/PageSize)!=0}" />
+                <apex:selectList value="{! PageSize }" size="1" rendered="{!CEILING(ResultSize/PageSize)!=0}">
+                    <apex:selectOption itemValue="5" itemLabel="5"/>
+                    <apex:selectOption itemValue="20" itemLabel="20"/>
+                    <apex:actionSupport event="onchange" reRender="contacts_list"/>
+                </apex:selectList>
+            </td>
+            <td align="right">
+                <apex:outputText value="No Records" rendered="{!CEILING(ResultSize/PageSize)==0}" /> 
+            </td>           
+        </tr></table>
+        <apex:pageBlockButtons style="align:left;"> 
+            <apex:commandButton value="save" action="{!save}" /> 
+        </apex:pageBlockButtons>    
+    </apex:pageBlock>
+</apex:form>    
